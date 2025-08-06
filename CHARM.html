@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHARM Project Orientation Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Harmony -->
+    <!-- Application Structure Plan: A project-centric, single-page application for the CHARM project staff. The structure is now: 1) Project Overview, 2) Core Frameworks (conventions as reference), 3) Activities & Outputs, and 4) a new Monitoring, Evaluation & Learning (MEL) Hub. This task-oriented flow is designed for staff orientation and ongoing reference, moving from the project's 'why' and 'what' to the 'how' and 'how we'll measure success'. -->
+    <!-- Visualization & Content Choices: Report Info: CHARM project details, conventions, and a devised MEL plan. Goal: To create a comprehensive orientation and reference tool. Viz/Presentation Method: Interactive cards for conventions and activities. A new section for MEL uses structured text and a doughnut chart to visualize the learning cycle. Interaction: Click-to-reveal panels remain the core interaction. Added external links on convention cards for direct access to official texts. Justification: This structure directly serves the new user (project staff) by prioritizing project information over general convention details, while keeping the conventions easily accessible as the foundational framework. The MEL section adds a critical component for project management. Library/Method: Vanilla JS, Chart.js, Tailwind CSS. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f7f4;
+            color: #4a4a4a;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 350px;
+        }
+        .convention-card, .action-card {
+            transition: all 0.3s ease-in-out;
+        }
+        .convention-card:hover, .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .content-panel {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.7s ease-in-out;
+        }
+        .content-panel.open {
+            max-height: 1500px;
+        }
+        .tab-button.active {
+            border-color: #0d9488;
+            color: #0d9488;
+            background-color: #f0fdfa;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <div class="text-xl font-bold text-gray-800">CHARM Project Hub</div>
+            <div class="hidden md:flex space-x-6 text-sm">
+                <a href="#overview" class="text-gray-600 hover:text-teal-600">Project Overview</a>
+                <a href="#frameworks" class="text-gray-600 hover:text-teal-600">Core Frameworks</a>
+                <a href="#activities" class="text-gray-600 hover:text-teal-600">Activities & Outputs</a>
+                <a href="#mel" class="text-teal-600 font-semibold hover:text-teal-700">MEL Hub</a>
+            </div>
+            <div class="md:hidden">
+                <button id="mobile-menu-button" class="text-gray-600 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden px-6 pt-2 pb-4">
+            <a href="#overview" class="block py-2 text-gray-600 hover:text-teal-600">Project Overview</a>
+            <a href="#frameworks" class="block py-2 text-gray-600 hover:text-teal-600">Core Frameworks</a>
+            <a href="#activities" class="block py-2 text-gray-600 hover:text-teal-600">Activities & Outputs</a>
+            <a href="#mel" class="block py-2 text-teal-600 font-semibold hover:text-teal-700">MEL Hub</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="overview" class="bg-teal-800 text-white text-center py-20 px-6">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">CHARM Project Orientation Hub</h1>
+            <h2 class="text-2xl md:text-3xl mb-6">Climate, Environmental, Human Rights and Good Governance Action for a Resilient Civil Society in Mindanao and the Philippines</h2>
+            <p class="max-w-3xl mx-auto text-teal-200">This hub is a central resource for project staff, providing essential information on project goals, frameworks, activities, and monitoring plans.</p>
+        </section>
+
+        <section class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto mb-12">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Project Overview</h2>
+                    <p class="text-lg text-gray-600">The CHARM project aims to empower Civil Society Actors (CSAs) in Mindanao to effectively monitor and advocate for the implementation of key international conventions, fostering a more just, sustainable, and rights-based society.</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 text-center">
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <h3 class="font-bold text-lg mb-2 text-teal-700">Overall Goal</h3>
+                        <p>To contribute to a more inclusive, peaceful, and resilient society in the Philippines through the enhanced promotion of human rights, environmental protection, and good governance.</p>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <h3 class="font-bold text-lg mb-2 text-teal-700">Partners</h3>
+                        <p>A consortium led by <strong>People in Need (PIN)</strong>, with the <strong>Manila Observatory (Klima Center)</strong> and the <strong>Bangsamoro Development and Peace Center (BMFI)</strong>.</p>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <h3 class="font-bold text-lg mb-2 text-teal-700">Target Groups</h3>
+                        <p>Engages at least <strong>30 CSAs/CBOs</strong>, <strong>20 activists</strong>, and <strong>20 journalists</strong>, focusing on grassroots and marginalized groups in Mindanao.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="frameworks" class="py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto mb-12">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Core Frameworks: International Conventions</h2>
+                    <p class="text-lg text-gray-600">These international instruments form the legal and normative basis for the CHARM project's activities. Use this section as a reference to understand the key obligations and their local applications.</p>
+                </div>
+                <div class="mb-8 border-b border-gray-200 flex justify-center">
+                    <button class="tab-button active py-2 px-4 border-b-2 font-medium text-gray-500" data-tab="human-rights">Human Rights</button>
+                    <button class="tab-button py-2 px-4 border-b-2 font-medium text-gray-500" data-tab="environment">Environment</button>
+                    <button class="tab-button py-2 px-4 border-b-2 font-medium text-gray-500" data-tab="governance">Governance</button>
+                </div>
+                <div id="tab-content">
+                    <div id="human-rights-content" class="tab-pane active">
+                        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="human-rights-cards"></div>
+                    </div>
+                    <div id="environment-content" class="tab-pane hidden">
+                        <div class="grid md:grid-cols-2 lg:grid-cols-2 gap-8" id="environment-cards"></div>
+                    </div>
+                    <div id="governance-content" class="tab-pane hidden">
+                        <div class="grid grid-cols-1 gap-8 max-w-2xl mx-auto" id="governance-cards"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="activities" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto mb-12">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Project Activities & Outputs</h2>
+                    <p class="text-lg text-gray-600">The project's strategy is organized around two key outputs: building the capacity of civil society and driving targeted advocacy campaigns. Explore the specific activities designed to achieve these goals.</p>
+                </div>
+                <div class="space-y-8" id="action-cards"></div>
+            </div>
+        </section>
+
+        <section id="mel" class="py-16 md:py-24 bg-teal-50">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto mb-12">
+                    <h2 class="text-3xl font-bold text-teal-800 mb-4">Monitoring, Evaluation & Learning (MEL) Hub</h2>
+                    <p class="text-lg text-gray-700">The MEL Hub outlines our approach to tracking progress, ensuring accountability, and fostering adaptive management. This framework guides us in measuring our impact and learning from our experiences.</p>
+                </div>
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <div class="bg-white p-8 rounded-lg shadow-md">
+                        <h3 class="font-bold text-xl mb-4 text-gray-700">MEL Framework</h3>
+                        <p class="mb-4 text-gray-600">Our MEL system is designed to be participatory and utilization-focused. It combines quantitative tracking with qualitative stories to capture the full picture of our progress towards empowering CSAs in Mindanao.</p>
+                        <div class="space-y-4">
+                            <div>
+                                <h4 class="font-semibold text-gray-700">Key Performance Indicators (KPIs)</h4>
+                                <p class="text-sm text-gray-600">We track specific indicators for each output, such as the number of CSAs trained, advocacy campaigns launched, and legal cases supported.</p>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-700">Data Collection Methods</h4>
+                                <p class="text-sm text-gray-600">Methods include pre/post-training assessments, activity reports, case studies, media monitoring, and participant feedback surveys.</p>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-700">Reporting & Learning Cycle</h4>
+                                <p class="text-sm text-gray-600">Progress is reviewed in quarterly meetings, shared in annual reports, and discussed in learning workshops to adapt and improve our strategies.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="chart-container">
+                            <canvas id="melChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="bg-gray-800 text-white py-12">
+            <div class="container mx-auto px-6 text-center">
+                <p class="text-gray-300">CHARM Project Orientation Hub</p>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const data = {
+                humanRights: [
+                    { icon: '⚖️', title: 'ICCPR', fullName: 'Intl. Covenant on Civil and Political Rights', link: 'https://www.ohchr.org/en/instruments-mechanisms/instruments/international-covenant-civil-and-political-rights' },
+                    { icon: '🏠', title: 'ICESCR', fullName: 'Intl. Covenant on Economic, Social and Cultural Rights', link: 'https://www.ohchr.org/en/instruments-mechanisms/instruments/international-covenant-economic-social-and-cultural-rights' },
+                    { icon: '👩', title: 'CEDAW', fullName: 'Convention on the Elimination of All Forms of Discrimination Against Women', link: 'https://www.ohchr.org/en/instruments-mechanisms/instruments/convention-elimination-all-forms-discrimination-against-women' },
+                    { icon: '👧', title: 'CRC', fullName: 'Convention on the Rights of the Child', link: 'https://www.ohchr.org/en/instruments-mechanisms/instruments/convention-rights-child' },
+                    { icon: '🌳', title: 'UNDRIP', fullName: 'UN Declaration on the Rights of Indigenous Peoples', link: 'https://www.un.org/development/desa/indigenouspeoples/wp-content/uploads/sites/19/2018/11/UNDRIP_E_web.pdf' }
+                ],
+                environment: [
+                    { icon: '🌍', title: 'UNFCCC & Paris Agreement', fullName: 'Climate Change Framework', link: 'https://unfccc.int/resource/docs/convkp/conveng.pdf' },
+                    { icon: '🦋', title: 'CBD', fullName: 'Convention on Biological Diversity', link: 'https://www.cbd.int/doc/legal/cbd-en.pdf' },
+                    { icon: '🏞️', title: 'Ramsar', fullName: 'Convention on Wetlands', link: 'https://www.ramsar.org/sites/default/files/documents/library/scan_e.pdf' },
+                    { icon: '🐘', title: 'CITES', fullName: 'Convention on Intl. Trade in Endangered Species', link: 'https://cites.org/sites/default/files/eng/disc/CITES-Convention-EN.pdf' }
+                ],
+                governance: [
+                    { icon: '🏛️', title: 'UNCAC', fullName: 'UN Convention against Corruption', link: 'https://www.unodc.org/documents/treaties/UNCAC/Publications/Convention/08-50026_E.pdf' }
+                ],
+                actions: [
+                    {
+                        icon: '🛠️',
+                        title: 'Output 1: Building Capacity',
+                        description: 'CSAs gain the technical skills, financial resources, and networks to monitor the ratification and implementation of international conventions.',
+                        activities: [
+                            '<strong>Capacity Assessment:</strong> Selection of target CSAs and activists.',
+                            '<strong>Pedagogical Materials:</strong> Development of informative materials and videos in local languages.',
+                            '<strong>Human Rights Training:</strong> Strengthening knowledge on conventions, litigation pathways, and case documentation.',
+                            '<strong>Financial Support (FSTP-1):</strong> Funding for CSA-led monitoring, research, and reporting activities.',
+                            '<strong>Rapid Legal Response:</strong> Establishment of a team for legal advisory and litigation support.'
+                        ]
+                    },
+                    {
+                        icon: '📢',
+                        title: 'Output 2: Driving Advocacy',
+                        description: 'CSAs increase their advocacy, campaigning, and policy dialogue to push for the implementation of international conventions.',
+                        activities: [
+                            '<strong>Advocacy Training:</strong> Strengthening skills in campaigning, strategic communication, and policy dialogue.',
+                            '<strong>Media Engagement:</strong> Training and awareness-raising programs for journalists and social media influencers.',
+                            '<strong>Financial Support (FSTP-2):</strong> Funding for CSA-led advocacy campaigns and policy dialogues.',
+                            '<strong>Network Building:</strong> Facilitating exchanges between CSAs within Mindanao and nationally.',
+                            '<strong>Publication of Guide:</strong> Creating an online guide with best practices for advocacy and political engagement.'
+                        ]
+                    }
+                ]
+            };
+
+            function createConventionCard(item) {
+                return `
+                    <div class="convention-card bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden">
+                        <div class="p-5">
+                            <div class="flex items-center">
+                                <span class="text-4xl mr-4">${item.icon}</span>
+                                <div>
+                                    <h3 class="text-xl font-bold text-gray-800">${item.title}</h3>
+                                    <p class="text-sm text-gray-500">${item.fullName}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 px-5 py-3">
+                             <a href="${item.link}" target="_blank" rel="noopener noreferrer" class="text-sm font-medium text-teal-600 hover:text-teal-800">
+                                Official Text &rarr;
+                            </a>
+                        </div>
+                    </div>
+                `;
+            }
+
+            function createActionCard(item, index) {
+                const card = document.createElement('div');
+                card.innerHTML = `
+                    <div class="action-card bg-white rounded-lg shadow-md p-6 cursor-pointer border border-gray-200" data-index="${index}">
+                        <div class="flex items-center">
+                            <span class="text-4xl mr-4">${item.icon}</span>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-800">${item.title}</h3>
+                                <p class="text-sm text-gray-500">${item.description}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-panel bg-gray-50 rounded-b-lg -mt-2">
+                        <div class="p-6 border-l-4 border-blue-500">
+                            <h4 class="font-bold text-lg mb-2 text-gray-700">Key Activities</h4>
+                            <ul class="list-disc list-inside text-gray-600 space-y-2">
+                                ${item.activities.map(act => `<li>${act}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                `;
+                return card;
+            }
+
+            const hrContainer = document.getElementById('human-rights-cards');
+            hrContainer.innerHTML = data.humanRights.map(createConventionCard).join('');
+
+            const envContainer = document.getElementById('environment-cards');
+            envContainer.innerHTML = data.environment.map(createConventionCard).join('');
+
+            const govContainer = document.getElementById('governance-cards');
+            govContainer.innerHTML = data.governance.map(createConventionCard).join('');
+
+            const actionContainer = document.getElementById('action-cards');
+            data.actions.forEach((item, index) => actionContainer.appendChild(createActionCard(item, index)));
+
+            document.querySelectorAll('.action-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const contentPanel = this.nextElementSibling;
+                    contentPanel.classList.toggle('open');
+                });
+            });
+            
+            const tabs = document.querySelectorAll('.tab-button');
+            const panes = document.querySelectorAll('.tab-pane');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    panes.forEach(p => p.classList.add('hidden'));
+
+                    tab.classList.add('active');
+                    document.getElementById(tab.dataset.tab + '-content').classList.remove('hidden');
+                });
+            });
+
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+            
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+            });
+
+            const melCtx = document.getElementById('melChart').getContext('2d');
+            new Chart(melCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Plan & Design', 'Act & Monitor', 'Report & Share', 'Learn & Adapt'],
+                    datasets: [{
+                        label: 'MEL Cycle',
+                        data: [25, 25, 25, 25],
+                        backgroundColor: [
+                            'rgba(13, 148, 136, 0.7)',
+                            'rgba(59, 130, 246, 0.7)',
+                            'rgba(249, 115, 22, 0.7)',
+                            'rgba(139, 92, 246, 0.7)'
+                        ],
+                        borderColor: '#f8f7f4',
+                        borderWidth: 4
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { 
+                        legend: { position: 'bottom' }, 
+                        title: { display: true, text: 'Project Learning & Adaptation Cycle' }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
